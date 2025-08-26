@@ -4,6 +4,7 @@ import com.karandev.util.console.Console;
 import org.csystem.util.string.StringUtil;
 
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 public class Application {
     public static void run(String[] args)
@@ -18,13 +19,11 @@ public class Application {
         Runnable[] runnables = new Runnable[nThreads];
 
         for (var i = 0; i < nThreads; i++) {
-            runnables[i] = new Runnable() {
-                @Override
-                public void run()
-                {
-                    randomTextGeneratorCallback(count, 5, 15);
-                }
-            };
+            // Her thread için ayrı bir Random nesnesi yaratılacak
+            // Yani herbir thread'in kullandığı Random nesnesi dışarıdan farklı olarak alınıyor
+            var random = new Random();
+
+            runnables[i] = () -> randomTextGeneratorCallback(random, count, 5, 15);
 
             var thread = new Thread(runnables[i], "Generator-" + (i + 1));
 
@@ -39,13 +38,12 @@ public class Application {
         System.out.println("main ends!...");
     }
 
-    private static void randomTextGeneratorCallback(int count, int min, int bound)
+    private static void randomTextGeneratorCallback(RandomGenerator randomGenerator, int count, int min, int bound)
     {
-        var random = new Random();
         var name = Thread.currentThread().getName();
 
         for (var i = 0; i < count; ++i) {
-            var text = StringUtil.getRandomTextEN(random, random.nextInt(min, bound));
+            var text = StringUtil.getRandomTextEN(randomGenerator, randomGenerator.nextInt(min, bound));
 
             System.out.printf("%s -> %s%n", name, text);
         }
