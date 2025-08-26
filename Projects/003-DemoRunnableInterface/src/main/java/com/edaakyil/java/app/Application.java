@@ -19,13 +19,14 @@ public class Application {
 
         for (var i = 0; i < nThreads; i++) {
             runnables[i] = () -> randomTextGeneratorCallback(count, 5, 15);
+
             var thread = new Thread(runnables[i], "Generator-" + (i + 1));
 
             thread.start();
         }
 
         for (var runnable : runnables)
-            System.err.println(runnable);
+            System.err.println(runnable.getClass().getName());
 
         System.out.println("main ends!...");
     }
