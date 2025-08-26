@@ -1,6 +1,6 @@
 package com.edaakyil.java.app;
 
-import com.edaakyil.java.app.thread.RandomTextGeneratorThread;
+import com.edaakyil.java.app.thread.RandomTextGenerator;
 import com.karandev.util.console.Console;
 
 public class Application {
@@ -14,7 +14,9 @@ public class Application {
         System.out.printf("Thread name: %s%n", self.getName());
 
         for (var i = 0; i < nThreads; i++) {
-            var thread = new RandomTextGeneratorThread("Generator-" + (i + 1), count, 5, 15);
+            var generator = new RandomTextGenerator(count, 5, 15);
+
+            var thread = new Thread(generator, "Generator-" + (i + 1)); // RandomTextGenerator türünden nesne Thread ile sarmalandı ve artık şimdi Thread sınıfı oldu
 
             thread.start();
         }
