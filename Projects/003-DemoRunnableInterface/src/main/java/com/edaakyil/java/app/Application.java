@@ -15,11 +15,17 @@ public class Application {
 
         System.out.printf("Thread name: %s%n", self.getName());
 
+        Runnable[] runnables = new Runnable[nThreads];
+
         for (var i = 0; i < nThreads; i++) {
-            var thread = new Thread(() -> randomTextGeneratorCallback(count, 5, 15), "Generator-" + (i + 1));
+            runnables[i] = () -> randomTextGeneratorCallback(count, 5, 15);
+            var thread = new Thread(runnables[i], "Generator-" + (i + 1));
 
             thread.start();
         }
+
+        for (var runnable : runnables)
+            System.err.println(runnable);
 
         System.out.println("main ends!...");
     }
