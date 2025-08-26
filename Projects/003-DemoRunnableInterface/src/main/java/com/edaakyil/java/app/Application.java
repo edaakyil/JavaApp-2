@@ -18,7 +18,13 @@ public class Application {
         Runnable[] runnables = new Runnable[nThreads];
 
         for (var i = 0; i < nThreads; i++) {
-            runnables[i] = () -> randomTextGeneratorCallback(count, 5, 15);
+            runnables[i] = new Runnable() {
+                @Override
+                public void run()
+                {
+                    randomTextGeneratorCallback(count, 5, 15);
+                }
+            };
 
             var thread = new Thread(runnables[i], "Generator-" + (i + 1));
 
