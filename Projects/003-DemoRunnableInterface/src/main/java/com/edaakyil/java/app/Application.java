@@ -31,8 +31,10 @@ public class Application {
             thread.start();
         }
 
-        for (var runnable : runnables)
-            System.err.println(runnable.getClass().getName());
+        for (var runnable : runnables) {
+            System.err.println(runnable.getClass().getName()); // Nesnenin türünü yani referansın dinamik türünü yazdırır
+            System.err.println(runnable);  // Nesnenin adresini yazdırır
+        }
 
         System.out.println("main ends!...");
     }
