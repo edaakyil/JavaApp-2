@@ -1,7 +1,10 @@
 package com.edaakyil.java.app;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class IntIncrementer {
-    private int m_value; // value start with 0
+    // AtomicInteger sınıfının görevi atomik işlemler yapmak üzere int türden bir değişkeni sarmalamaktır (yani sarlamala görevi atomik işlemler yapmaktır)
+    private AtomicInteger m_value;
     private final int m_count;
 
     private void runCallback(int idx)
@@ -9,17 +12,19 @@ public class IntIncrementer {
         System.out.printf("%s-%d created%n", Thread.currentThread().getName(), idx);
 
         for (var i = 0; i < m_count; ++i)
-            ++m_value;
+            m_value.getAndIncrement();
     }
 
     public IntIncrementer(int count)
     {
         m_count = count;
+        // AtomicInteger sınıfının default ctor'u içeride sarmaladığı sayıyı 0 olarak set eder.
+        m_value = new AtomicInteger(); // 0 ile başlatılan bir int türden değişkeni sarmalar
     }
 
     public int getValue()
     {
-        return m_value;
+        return m_value.get();
     }
 
     public void run(int nThreads)
