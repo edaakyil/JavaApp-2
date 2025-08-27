@@ -3,26 +3,33 @@ package com.edaakyil.java.app;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class IntIncrementer {
-    // AtomicInteger sınıfının görevi atomik işlemler yapmak üzere int türden bir değişkeni sarmalamaktır (yani sarlamala görevi atomik işlemler yapmaktır)
-    private AtomicInteger m_value;
     private final int m_count;
+    private final AtomicInteger m_value1;
+    private final AtomicInteger m_value2;
 
     private void incrementerCallback(int idx)
     {
-        for (var i = 0; i < m_count; ++i)
-            m_value.getAndIncrement();
+        for (var i = 0; i < m_count; ++i) {
+            m_value1.getAndIncrement();
+            m_value2.getAndIncrement();
+        }
     }
 
     public IntIncrementer(int count)
     {
         m_count = count;
-        // AtomicInteger sınıfının default ctor'u içeride sarmaladığı sayıyı 0 olarak set eder.
-        m_value = new AtomicInteger(); // 0 ile başlatılan bir int türden değişkeni sarmalar
+        m_value1 = new AtomicInteger();
+        m_value2 = new AtomicInteger();
     }
 
-    public int getValue()
+    public int getValue1()
     {
-        return m_value.get();
+        return m_value1.get();
+    }
+
+    public int getValue2()
+    {
+        return m_value2.get();
     }
 
     public void run(int nThreads)

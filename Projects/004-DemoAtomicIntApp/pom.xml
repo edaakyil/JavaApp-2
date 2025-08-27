@@ -12,9 +12,9 @@
     </parent>
 
     <groupId>com.edaakyil</groupId>
-    <artifactId>DemoAtomicIntegerApp</artifactId>
+    <artifactId>DemoAtomicIntApp</artifactId>
     <version>1.0.0</version>
-    <name>DemoAtomicIntegerApp</name>
+    <name>DemoAtomicIntApp</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
