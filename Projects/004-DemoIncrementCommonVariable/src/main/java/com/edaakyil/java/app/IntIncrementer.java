@@ -7,10 +7,8 @@ public class IntIncrementer {
     private AtomicInteger m_value;
     private final int m_count;
 
-    private void runThreadCallback(int idx)
+    private void incrementerCallback(int idx)
     {
-        System.out.printf("%s-%d created%n", Thread.currentThread().getName(), idx);
-
         for (var i = 0; i < m_count; ++i)
             m_value.getAndIncrement();
     }
@@ -34,7 +32,7 @@ public class IntIncrementer {
         for (var i = 0; i < nThreads; ++i) {
             var idx  = i;
 
-            threads[i] = new Thread(() -> runThreadCallback(idx), "Thread");
+            threads[i] = new Thread(() -> incrementerCallback(idx), "Thread");
             threads[i].start();
         }
 
