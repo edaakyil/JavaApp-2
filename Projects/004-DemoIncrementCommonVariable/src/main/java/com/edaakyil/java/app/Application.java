@@ -1,11 +1,13 @@
 package com.edaakyil.java.app;
 
+import com.karandev.util.console.Console;
+
 public class Application {
     public static void run(String[] args)
     {
-        var incrementer = new IntIncrementer(1_000_000);
+        var incrementer = new IntIncrementer(Console.readInt("Input count: "));
 
-        incrementer.run(2);
+        incrementer.run(Console.readInt("Input number of threads: "));
 
         // join ile thread'lerin akışını bekletmemizin nedeni:
         // incrementer.run(2) işlemi bittikten sonra yani threadler işlenmlerini bitirdikten sonra
