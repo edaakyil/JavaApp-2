@@ -1,17 +1,18 @@
 package com.edaakyil.java.app;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class IntIncrementer {
     private final int m_count;
     private final AtomicInteger m_value1;
-    private final AtomicInteger m_value2;
+    private final AtomicLong m_value2;
 
     private void incrementerCallback(int idx)
     {
         for (var i = 0; i < m_count; ++i) {
             m_value1.getAndIncrement();
-            m_value2.getAndIncrement();
+            m_value2.getAndAdd(m_value1.get());
         }
     }
 
@@ -19,7 +20,7 @@ public class IntIncrementer {
     {
         m_count = count;
         m_value1 = new AtomicInteger();
-        m_value2 = new AtomicInteger();
+        m_value2 = new AtomicLong();
     }
 
     public int getValue1()
@@ -27,7 +28,7 @@ public class IntIncrementer {
         return m_value1.get();
     }
 
-    public int getValue2()
+    public long getValue2()
     {
         return m_value2.get();
     }
