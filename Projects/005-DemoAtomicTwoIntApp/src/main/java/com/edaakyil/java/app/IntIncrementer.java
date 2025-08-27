@@ -1,36 +1,36 @@
 package com.edaakyil.java.app;
 
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-
 public class IntIncrementer {
+    private int m_value1;
+    private long m_value2;
     private final int m_count;
-    private final AtomicInteger m_value1;
-    private final AtomicLong m_value2;
 
-    private void incrementerCallback(int idx)
+    private void incrementerCallback()
     {
         for (var i = 0; i < m_count; ++i) {
-            m_value1.getAndIncrement();
-            m_value2.getAndAdd(m_value1.get());
+            // Bir kritik bölgeye yanlızca tek bir akışın girmesini sağlayan syncronizasyon nesnesine mutex denir
+            // Java'da doğrudan mutex sınıfı yok. Fakat Java dilinin doğasında özel bir deyim var: synchronized deyimi
+            // synchronized deyimi bir Object ile çalışıyor
+            synchronized (this) {
+                ++m_value1;
+                m_value2 += m_value1;
+            }
         }
     }
 
     public IntIncrementer(int count)
     {
         m_count = count;
-        m_value1 = new AtomicInteger();
-        m_value2 = new AtomicLong();
     }
 
     public int getValue1()
     {
-        return m_value1.get();
+        return m_value1;
     }
 
     public long getValue2()
     {
-        return m_value2.get();
+        return m_value2;
     }
 
     public void run(int nThreads)
@@ -38,9 +38,7 @@ public class IntIncrementer {
         Thread[] threads = new Thread[nThreads];
 
         for (var i = 0; i < nThreads; ++i) {
-            var idx  = i;
-
-            threads[i] = new Thread(() -> incrementerCallback(idx), "Thread");
+            threads[i] = new Thread(this::incrementerCallback, "Thread"); // threads[i] = new Thread(() -> incrementerCallback(), "Thread");
             threads[i].start();
         }
 
